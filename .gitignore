@@ -33,3 +33,6 @@ myplot.pdf
 
 # Visual Studio Code
 .vscode
+
+# Notebook
+.ipynb*
