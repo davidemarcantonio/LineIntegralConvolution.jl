@@ -8573,5 +8573,5 @@ savefig("myplot.pdf")  # export to PDF vectorial image
 ```
 
 
-    "/Users/davide/Documents/SW Projects/LineIntegralConvolution.jl/myplot.pdf"
+    "LineIntegralConvolution.jl/myplot.pdf"
 
