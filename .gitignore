@@ -36,3 +36,6 @@ myplot.pdf
 
 # Notebook
 .ipynb*
+
+# Virtual Environment
+env/
