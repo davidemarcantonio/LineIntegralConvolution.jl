@@ -26,7 +26,7 @@ Manifest.toml
 # LineIntegralConvoluation.jl Custom
 
 # Test Generated
-myplot.pdf
+data/*.pdf
 
 # MAC OS
 .DS_Store
