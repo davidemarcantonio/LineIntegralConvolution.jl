@@ -96,3 +96,109 @@ function simulate_2d_electrostatic(
 
     return (x=pts_x, y=pts_y, z=field_log, f=field_lin, cx=charge_x, cy=charge_y, cq=charge_q)
 end
+
+struct Field2D
+    pos_x
+    pos_y
+    val_x
+    val_y
+end
+
+function lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1)
+
+    if kernel_type == "LPF"
+        kernel = ones(kernel_size)
+    elseif kernel_type == "COS"
+        kernel = cos.(0.0 : pi / (2.0* kernel_size) : pi/2.0)
+    else
+        error("Invalid kernel")
+    end
+
+    kernel ./= sum(kernel)
+
+    image_width = length(f_y)
+    image_height = length(f_x)
+
+    ## initial random image
+    random_image = rand(MersenneTwister(seed), image_width, image_height) .- 0.5
+    seed += 1
+
+    # new images
+    img = zeros(image_width, image_height)
+
+    # compute LIC
+
+    theta_mat = atan.(f_lin[:, :, 1], f_lin[:, :, 2])
+    Δx = sin.(theta_mat)
+    Δy = cos.(theta_mat)
+    # abs_sin = abs.(Δx)
+    # abs_cos = abs.(Δy)
+
+    target_num_prints = 10
+
+    for x = 1 : image_width
+        for y = 1 : image_height
+
+            if rand() > 1.0 - target_num_prints / (image_width * image_height)
+                print((((x * (image_height-1) + y)/(image_width * image_height))*100), " %\n");
+            end
+
+            c_pix = random_image[x, y] * kernel[1]
+            xp = x
+            yp = y
+            cdx = 0
+            cdy = 0
+
+            for w = 2 : kernel_size
+
+                cdx += Δx[xp, yp]
+                cdy += Δy[xp, yp]
+
+                # compute new position pixel
+                xpc = x + Int(round(cdx))
+                ypc = y + Int(round(cdy))
+
+                # check new position is valid
+                if xpc < 1
+                    xpc = 1
+                elseif xpc > image_width
+                    xpc = image_width
+                end
+                if ypc < 1
+                    ypc = 1
+                elseif ypc > image_height
+                    ypc = image_height
+                end
+
+                # interpolate
+
+                c_pix += random_image[xpc, ypc] * kernel[w]
+
+                # norm_factor = (1 - abs_cos[xp, yp]) * (1 - abs_sin[xp, yp])
+                # c_pix += random_image[xp, yp] * kernel[w] * norm_factor
+
+                # norm_factor = abs_cos[xp, yp]
+                # c_pix += random_image[xpc, yp] * kernel[w] * norm_factor
+
+                # norm_factor = abs_sin[xp, yp]
+                # c_pix += random_image[xp, ypc] * kernel[w] * norm_factor
+                
+                # norm_factor = abs_cos[xp, yp] * abs_sin[xp, yp]
+                # c_pix += random_image[xpc, ypc] * kernel[w] * norm_factor
+
+                xp = xpc
+                yp = ypc
+            end
+            
+            # new_image[x, y, 1] = (current_pixel2 + .5) * 0.5 + (field_log[x, y]) * 0.5
+            # new_image[x, y, 2] = (current_pixel2 + .5) * 0.5 + (field_log[x, y]) * 0.5 
+            # new_image[x, y, 3] = (current_pixel2 + .5) * 0.5 + (1 - field_log[x, y]) * 0.5
+
+            img[x, y] = c_pix
+        end
+    end
+
+    img .+= 0.5
+
+    return (rnd_img=random_image, final_img=img)
+end
