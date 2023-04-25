@@ -1,4 +1,4 @@
-# LineIntegralConvolution.jl
+# LineIntegralConvolution
 
 Line Integral Convolution (LIC) visualization tool for vector fields
 
