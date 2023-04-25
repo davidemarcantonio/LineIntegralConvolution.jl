@@ -30,3 +30,6 @@ myplot.pdf
 
 # MAC OS
 .DS_Store
+
+# Visual Studio Code
+.vscode
