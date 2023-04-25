@@ -104,7 +104,7 @@ struct Field2D
     val_y
 end
 
-function lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1)
+function lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
     if kernel_type == "LPF"
         kernel = ones(kernel_size)
@@ -131,8 +131,10 @@ function lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1)
     theta_mat = atan.(f_lin[:, :, 1], f_lin[:, :, 2])
     Δx = sin.(theta_mat)
     Δy = cos.(theta_mat)
-    # abs_sin = abs.(Δx)
-    # abs_cos = abs.(Δy)
+    if interpolate
+        abs_sin = abs.(Δx)
+        abs_cos = abs.(Δy)
+    end
 
     target_num_prints = 10
 
@@ -170,29 +172,22 @@ function lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1)
                     ypc = image_height
                 end
 
-                # interpolate
-
-                c_pix += random_image[xpc, ypc] * kernel[w]
-
-                # norm_factor = (1 - abs_cos[xp, yp]) * (1 - abs_sin[xp, yp])
-                # c_pix += random_image[xp, yp] * kernel[w] * norm_factor
-
-                # norm_factor = abs_cos[xp, yp]
-                # c_pix += random_image[xpc, yp] * kernel[w] * norm_factor
-
-                # norm_factor = abs_sin[xp, yp]
-                # c_pix += random_image[xp, ypc] * kernel[w] * norm_factor
-                
-                # norm_factor = abs_cos[xp, yp] * abs_sin[xp, yp]
-                # c_pix += random_image[xpc, ypc] * kernel[w] * norm_factor
+                if interpolate
+                    norm_factor = (1 - abs_cos[xp, yp]) * (1 - abs_sin[xp, yp])
+                    c_pix += random_image[xp, yp] * kernel[w] * norm_factor
+                    norm_factor = abs_cos[xp, yp]
+                    c_pix += random_image[xpc, yp] * kernel[w] * norm_factor
+                    norm_factor = abs_sin[xp, yp]
+                    c_pix += random_image[xp, ypc] * kernel[w] * norm_factor
+                    norm_factor = abs_cos[xp, yp] * abs_sin[xp, yp]
+                    c_pix += random_image[xpc, ypc] * kernel[w] * norm_factor
+                else
+                    c_pix += random_image[xpc, ypc] * kernel[w]
+                end
 
                 xp = xpc
                 yp = ypc
             end
-            
-            # new_image[x, y, 1] = (current_pixel2 + .5) * 0.5 + (field_log[x, y]) * 0.5
-            # new_image[x, y, 2] = (current_pixel2 + .5) * 0.5 + (field_log[x, y]) * 0.5 
-            # new_image[x, y, 3] = (current_pixel2 + .5) * 0.5 + (1 - field_log[x, y]) * 0.5
 
             img[x, y] = c_pix
         end

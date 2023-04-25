@@ -30,6 +30,7 @@ data/*.pdf
 
 # MAC OS
 .DS_Store
+*.icloud
 
 # Visual Studio Code
 .vscode
