@@ -6,6 +6,9 @@ update-readme:
 		deactivate; \
 	)
 
+julia:
+	sudo julia
+
 # configure-venv:
 # 	python3 -m venv env
 # 	source env/bin/activate
