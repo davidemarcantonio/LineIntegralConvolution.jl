@@ -466,5 +466,5 @@ savefig("myplot.pdf")  # export to PDF vectorial image
 ```
 
 
-![png](LineIntegralConvolution.jl/myplot.pdf)
+![png](lic_examples_files/myplot.pdf)
 
