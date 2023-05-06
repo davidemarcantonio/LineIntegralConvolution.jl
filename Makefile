@@ -9,6 +9,12 @@ update-readme:
 julia:
 	sudo julia
 
+doc:
+	( \
+		cd docs; \
+		sudo julia --color=yes make.jl; \
+	)
+
 # configure-venv:
 # 	python3 -m venv env
 # 	source env/bin/activate

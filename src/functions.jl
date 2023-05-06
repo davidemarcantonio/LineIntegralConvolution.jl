@@ -1,9 +1,19 @@
 using Random
 
+"""
+    greet_your_package_name()
+
+test
+"""
 function greet_your_package_name()
     return "Hello world!"
 end
 
+"""
+    meshgrid(x_range, y_range)
+
+Returns a 2D grid of points.
+"""
 function meshgrid(x_range, y_range)
     num_x_pts = length(x_range)
     num_y_pts = length(y_range)
@@ -18,6 +28,13 @@ function meshgrid(x_range, y_range)
     return (x=pts_x, y=pts_y)
 end
 
+"""
+    simulate_2d_electrostatic(
+        x_min, x_max, y_min, y_max, pt_per_meter, n_charges=1, 
+        distribution="circle", seed=1, charge_value=1e-6)
+
+Returns a 2D grid of points.
+"""
 function simulate_2d_electrostatic(
     x_min, x_max, y_min, y_max, pt_per_meter, n_charges=1, 
     distribution="circle", seed=1, charge_value=1e-6)
@@ -97,6 +114,10 @@ function simulate_2d_electrostatic(
     return (x=pts_x, y=pts_y, z=field_log, f=field_lin, cx=charge_x, cy=charge_y, cq=charge_q)
 end
 
+"""
+Field2D
+
+"""
 struct Field2D
     pos_x
     pos_y
@@ -104,6 +125,13 @@ struct Field2D
     val_y
 end
 
+"""
+    lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
+
+lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
+
+Returns a 2D grid of points.
+"""
 function lic(f_x, f_y, f_lin, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
     if kernel_type == "LPF"
