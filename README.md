@@ -30,8 +30,8 @@ savefig("electric_charges.pdf")  # export to PDF vectorial image
 savefig("electric_charges.png")  # export to PNG
 ```
 
+![png](data/electric_charges.png)
+
 ## About
 
 This project started on the `April, 2023`.
-
-![png](data/electric_charges.png)
