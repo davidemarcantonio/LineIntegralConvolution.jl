@@ -1,18 +1,15 @@
-update-readme:
-	( \
-		source env/bin/activate; \
-		jupyter nbconvert --to markdown lic_examples.ipynb; \
-		mv lic_examples.md README.md; \
-		deactivate; \
-	)
-
-julia:
-	sudo julia
+# update-readme:
+# 	( \
+# 		source env/bin/activate; \
+# 		jupyter nbconvert --to markdown lic_examples.ipynb; \
+# 		mv lic_examples.md README.md; \
+# 		deactivate; \
+# 	)
 
 doc:
 	( \
 		cd docs; \
-		sudo julia --color=yes make.jl; \
+		julia --color=yes make.jl; \
 	)
 
 # configure-venv:

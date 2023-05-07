@@ -8,7 +8,7 @@ module LineIntegralConvolution
     export load_2d_electrostatic_example
 
     include("functions.jl")
-    export lic
     export lic_process
+    export lic
 
 end

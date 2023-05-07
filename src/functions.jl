@@ -106,7 +106,21 @@ function lic_process(field; kernel_size=20, kernel_type="LPF", seed=1, interpola
 
     img .+= 0.5
 
-    return (rnd_img=random_image, final_img=img)
+    field_modulus = abs.(field[:,:,1] .^ 2 + field[:,:,2] .^ 2)
+    field_log = 10.0*log10.(field_modulus)
+
+    v, _ = findmax(field_log)
+    vmin, _ = findmin(field_log)
+    int_img = (field_log .- vmin) ./ (v - vmin)  # Intensity (normalize)
+
+    alpha_lic = 0.3
+    alpha_int = 1.0 - alpha_lic
+    r = img .* alpha_lic .+ int_img .* alpha_int
+    g = img .* alpha_lic .+ int_img .* alpha_int
+    b = img .* alpha_lic .+ (1.0 .- int_img) .* alpha_int
+    img1d = colorview(RGB, r, g, b)
+
+    return img1d
 end
 
 """
@@ -116,21 +130,11 @@ Returns a Line Integral Convolution image of the field
 """
 function lic(field; kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
-    lic_img = lic_process(field, kernel_size, kernel_type, seed, interpolate)
+    lic_img = lic_process(
+        field, kernel_size=kernel_size, 
+        kernel_type=kernel_type, seed=seed, 
+        interpolate=interpolate
+    )
 
-    # field_modulus = sum(abs.(values))
-    # field_log = 10.0*log10.(field_modulus)
-
-    v, i = findmax(field_result.z)
-    vmin, i = findmin(field_result.z)
-    int_img = field_result.z  # (field_result.z .- vmin) ./ (v - vmin) # Intensity (normalize)
-
-    alpha_lic = 0.3
-    alpha_int = 1.0 - alpha_lic
-    r = lic_img .* alpha_lic .+ int_img .* alpha_int
-    g = lic_img .* alpha_lic .+ int_img .* alpha_int
-    b = lic_img .* alpha_lic .+ (1.0 .- int_img) .* alpha_int
-    img1d = colorview(RGB, r, g, b)
-
-    heatmap(img1d)
+    heatmap(lic_img)
 end
