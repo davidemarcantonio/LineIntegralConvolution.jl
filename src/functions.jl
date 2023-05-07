@@ -46,15 +46,15 @@ function lic_process(field; kernel_size=20, kernel_type="LPF", seed=1, interpola
         abs_sin = abs.(Δx)
         abs_cos = abs.(Δy)
     end
-
-    target_num_prints = 10
-
+    # target_num_prints = 0 # 10 debug line
+    
     for x = 1 : image_width
         for y = 1 : image_height
 
-            if rand() > 1.0 - target_num_prints / (image_width * image_height)
-                print((((x * (image_height-1) + y)/(image_width * image_height))*100), " %\n");
-            end
+            # debug lines
+            # if rand() > 1.0 - target_num_prints / (image_width * image_height)
+            #     print((((x * (image_height-1) + y)/(image_width * image_height))*100), " %\n");
+            # end
 
             c_pix = random_image[x, y] * kernel[1]
             xp = x
@@ -118,9 +118,9 @@ function lic_process(field; kernel_size=20, kernel_type="LPF", seed=1, interpola
     r = img .* alpha_lic .+ int_img .* alpha_int
     g = img .* alpha_lic .+ int_img .* alpha_int
     b = img .* alpha_lic .+ (1.0 .- int_img) .* alpha_int
-    img1d = colorview(RGB, r, g, b)
+    lic_img = colorview(RGB, r, g, b)
 
-    return img1d
+    return lic_img
 end
 
 """

@@ -37,6 +37,7 @@ data/*.pdf
 
 # Notebook
 .ipynb*
+*.ipynb
 
 # Virtual Environment
 env/
