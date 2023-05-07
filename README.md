@@ -7,8 +7,8 @@ Line Integral Convolution (LIC) visualization tool for 2D vector fields
 This package builds over the following Julia packages
 
 * [Random](https://docs.julialang.org/en/v1/stdlib/Random/) (standard library) 
-* [Plots](https://docs.juliaplots.org/latest/tutorial/)
-* [Images](https://juliaimages.org/latest/install/)
+* [Plots](https://docs.juliaplots.org/latest/tutorial/) v1.38
+* [Images](https://juliaimages.org/latest/install/) v0.25
 
 ## Example
 
