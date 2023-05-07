@@ -1,10 +1,14 @@
 module LineIntegralConvolution
-    
+
+    using Random
+    using Plots
+    using Images
+
+    include("utils.jl")
+    export load_2d_electrostatic_example
+
     include("functions.jl")
-    export greet_your_package_name
-    export meshgrid
-    export simulate_2d_electrostatic
-    export Field2D
+    export lic_process
     export lic
-    
+
 end
