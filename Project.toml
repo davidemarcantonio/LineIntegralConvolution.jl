@@ -1,7 +1,7 @@
 name = "LineIntegralConvolution"
 uuid = "954431ae-a746-4b0b-bf75-a8381ca95b21"
 authors = ["Davide Marcantonio"]
-version = "0.1.0-DEV"
+version = "0.1.7-DEV"
 
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"

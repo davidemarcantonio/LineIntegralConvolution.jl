@@ -1,12 +1,11 @@
 module LineIntegralConvolution
 
-    include("functions.jl")
+    include("data_structures.jl")
+    export Field2D
 
-    export 
-        greet_your_package_name,
-        meshgrid,
-        simulate_2d_electrostatic,
-        Field2D,
-        lic
+    using Random
+    using Plots
+    include("functions.jl")
+    export lic
 
 end
