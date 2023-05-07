@@ -1,11 +1,14 @@
 module LineIntegralConvolution
 
-    include("data_structures.jl")
-    export Field2D
-
     using Random
     using Plots
+    using Images
+
+    include("utils.jl")
+    export load_2d_electrostatic_example
+
     include("functions.jl")
     export lic
+    export lic_process
 
 end

@@ -1,10 +1,10 @@
 name = "LineIntegralConvolution"
 uuid = "954431ae-a746-4b0b-bf75-a8381ca95b21"
 authors = ["Davide Marcantonio"]
-version = "0.1.7-DEV"
+version = "0.1.10-DEV"
 
 [deps]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 

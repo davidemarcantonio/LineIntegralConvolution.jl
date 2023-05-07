@@ -4,27 +4,29 @@
 Generate a filtering kernel
 """
 function get_kernel(size=20, kernel="LPF")
-    if kernel == "LPF"
-        kernel_vec = ones(size)
-    elseif kernel == "COS"
-        kernel_vec = cos.(0.0 : pi / (2.0* size) : pi/2.0)
-    else
-        error("Invalid kernel")
+    if size <= 0
+        error("Invalid kernel size, it must be a positive integer")
     end
-    kernel_vec ./= sum(kernel_vec)
+    if kernel == "LPF"
+        kernel_vec = ones(size)  # flat averaging (no decay)
+    elseif kernel == "COS"
+        end_val = pi / 2.0
+        kernel_vec = cos.(0.0 : end_val / size : end_val)  # cosine decay
+    else
+        error("Invalid kernel type, 'LPF' and 'COS' are implemented")
+    end
+    kernel_vec ./= sum(kernel_vec)  # normalize energy
     return kernel_vec
 end
 
 """
-    lic(field::Field2D, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
+    lic_process(field, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
 Returns a Line Integral Convolution image of the field
 """
-function lic_process(field::Field2D, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
+function lic_process(field; kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
-    image_width = length(field.pos_y)
-    image_height = length(field.pos_x)
-    f_lin = field.val
+    image_width, image_height = size(field)
 
     # Prepare filtering kernel
     kernel = get_kernel(kernel_size, kernel_type)
@@ -37,7 +39,7 @@ function lic_process(field::Field2D, kernel_size=20, kernel_type="LPF", seed=1, 
     img = zeros(image_width, image_height)
 
     # Compute LIC
-    theta_mat = atan.(f_lin[:, :, 1], f_lin[:, :, 2])
+    theta_mat = atan.(field[:, :, 1], field[:, :, 2])
     Δx = sin.(theta_mat)
     Δy = cos.(theta_mat)
     if interpolate
@@ -108,20 +110,20 @@ function lic_process(field::Field2D, kernel_size=20, kernel_type="LPF", seed=1, 
 end
 
 """
-    lic(field::Field2D, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
+    lic(field, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
 Returns a Line Integral Convolution image of the field
 """
-function lic(field::Field2D, kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
+function lic(field; kernel_size=20, kernel_type="LPF", seed=1, interpolate=true)
 
-    lic_img = lic_process(field, kernel_size, kernel_type, seed, interpolate)  # LIC
+    lic_img = lic_process(field, kernel_size, kernel_type, seed, interpolate)
 
     # field_modulus = sum(abs.(values))
     # field_log = 10.0*log10.(field_modulus)
 
     v, i = findmax(field_result.z)
     vmin, i = findmin(field_result.z)
-    int_img = (field_result.z .- vmin) ./ (v - vmin) # Intensity (normalize)
+    int_img = field_result.z  # (field_result.z .- vmin) ./ (v - vmin) # Intensity (normalize)
 
     alpha_lic = 0.3
     alpha_int = 1.0 - alpha_lic
