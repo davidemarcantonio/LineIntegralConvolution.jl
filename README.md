@@ -2,6 +2,10 @@
 
 Line Integral Convolution (LIC) visualization tool for 2D vector fields
 
+## Documentation
+
+Documentaion is available [here](https://davidemarcantonio.github.io/LineIntegralConvolution.jl/)
+
 ## Dependencies
 
 This package builds over the following Julia packages
@@ -42,4 +46,4 @@ savefig("electric_charges.png")  # export to PNG
 
 ## About
 
-This project started on the `April, 2023`.
+This project started on `April, 2023`.
