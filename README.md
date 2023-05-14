@@ -4,7 +4,7 @@ Line Integral Convolution (LIC) visualization tool for 2D vector fields
 
 ## Documentation
 
-Documentaion is available [here](https://davidemarcantonio.github.io/LineIntegralConvolution.jl/)
+Documentation is available [here](https://davidemarcantonio.github.io/LineIntegralConvolution.jl/)
 
 ## Dependencies
 
